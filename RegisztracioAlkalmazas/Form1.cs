@@ -118,6 +118,7 @@ namespace RegisztracioAlkalmazas
                     sw.WriteLine("Nem:");
                     if (f.Checked)
                     {
+
                         sw.WriteLine("Férfi");
                     }
                     if (n.Checked)
