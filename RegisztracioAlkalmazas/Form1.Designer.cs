@@ -93,6 +93,7 @@
             this.ujhobbi.Name = "ujhobbi";
             this.ujhobbi.Size = new System.Drawing.Size(100, 22);
             this.ujhobbi.TabIndex = 5;
+            this.ujhobbi.TextChanged += new System.EventHandler(this.Ujhobbi_TextChanged);
             // 
             // hozzaad
             // 

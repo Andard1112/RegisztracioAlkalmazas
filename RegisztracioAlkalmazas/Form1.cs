@@ -22,7 +22,7 @@ namespace RegisztracioAlkalmazas
             hobbik.Items.Add("Horgászat");
             hobbik.Items.Add("Futás");
             
-            ArrayList lista = new ArrayList();
+            List<String> lista = new List<String>();
             openFileDialog1.FileOk += (sender, e) =>
             {
                 try
@@ -44,10 +44,12 @@ namespace RegisztracioAlkalmazas
                         {
                             n.Checked = false;
                         }
-                        for (int i = 3; i < lista.Count; i++)
+                        for (int i = 3; i < lista.Count-1; i++)
                         {
                             hobbik.Items.Add(lista[i].ToString());
+
                         }
+                        hobbik.SelectedIndex =int.Parse(lista[lista.Count-1]);
                     }
                 }
                 catch (IOException)
@@ -81,14 +83,26 @@ namespace RegisztracioAlkalmazas
 
         private void Hozzaad_Click(object sender, EventArgs e)
         {
+            if (!(hobbik.Items.Contains(ujhobbi.Text)) && ujhobbi.Text != "")
+            {
+                hobbik.Items.Add(ujhobbi.Text);
+                ujhobbi.Text = "";
+            }
             
-            hobbik.Items.Add(ujhobbi.Text);
-            ujhobbi.Text = "";
         }
 
         private void Mentes_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.ShowDialog();
+            if ((nev.Text.Trim() != "" && szuldatum.Text.Trim() != "" && (f.Checked == true || n.Checked == true) && hobbik.SelectedIndex > -1))
+            {
+                saveFileDialog1.ShowDialog();
+
+            }
+            else
+            {
+                MessageBox.Show("Ki kell tölteni a mezőket mielőtt menteni próbál!!");
+            }
+            
         }
 
         private void N_CheckedChanged(object sender, EventArgs e)
@@ -108,27 +122,31 @@ namespace RegisztracioAlkalmazas
         {
             try
             {
-                using (var sw = new StreamWriter(saveFileDialog1.FileName))
+                
+                    using (var sw = new StreamWriter(saveFileDialog1.FileName))
                 {
-                    sw.WriteLine("Név:");
-                    sw.WriteLine(nev.Text);
-                    sw.WriteLine("Születési dátum:");
-                    sw.WriteLine(szuldatum.Text);
-                    sw.WriteLine("Kedvenc hobbik:");
-                    sw.WriteLine("Nem:");
-                    if (f.Checked)
-                    {
+                    
 
-                        sw.WriteLine("Férfi");
-                    }
-                    if (n.Checked)
-                    {
-                        sw.WriteLine("Nő");
-                    }
-                    foreach (var item in hobbik.Items)
-                    {
-                        sw.WriteLine(item);
-                    }
+                        sw.WriteLine("Név:");
+                        sw.WriteLine(nev.Text);
+                        sw.WriteLine("Születési dátum:");
+                        sw.WriteLine(szuldatum.Text);
+                        sw.WriteLine("Nem:");
+                        if (f.Checked)
+                        {
+
+                            sw.WriteLine("Férfi");
+                        }
+                        if (n.Checked)
+                        {
+                            sw.WriteLine("Nő");
+                        }
+
+                        sw.WriteLine("Kedvenc hobbik:");
+                        foreach (var item in hobbik.Items)
+                        {
+                            sw.WriteLine(item);
+                        }
                     
                 }
             }
@@ -150,6 +168,11 @@ namespace RegisztracioAlkalmazas
         }
 
         private void MaskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void Ujhobbi_TextChanged(object sender, EventArgs e)
         {
 
         }
